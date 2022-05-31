@@ -15,10 +15,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework import routers
-
-
-router = routers.SimpleRouter()
 
 
 api_v1_urlpatterns = [
@@ -30,7 +26,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('authemail.urls')),
     path(
-        'o/',
+        'oauth2/',
         include('oauth2_provider.urls', namespace='oauth2_provider')
     ),
     path(

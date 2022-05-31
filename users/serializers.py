@@ -1,15 +1,34 @@
-from authemail.serializers import SignupSerializer
+from django.contrib.auth import get_user_model
+from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 
 
-class CustomSignupSerializer(SignupSerializer):
-    def update(self, instance, validated_data):
-        super().update(instance, validated_data)
+class ReadOnlyUserSerializer(serializers.ModelSerializer):
+    """
+    Serializer class for custom user model.
+    """
 
-    def create(self, validated_data):
-        super().create(validated_data)
+    class Meta:
+        model = get_user_model()
+        fields = ('first_name',)
 
-    def get_email_options(self):
-        return {
-            'email_template_name': 'authemail/signup_email.txt',
-            'html_email_template_name': 'authemail/signup_email.html',
-        }
+
+class CustomUserSerializer(serializers.ModelSerializer):
+    """
+    Serializer class for custom user model.
+    """
+
+    email = serializers.EmailField(
+        validators=[
+            UniqueValidator(
+                queryset=get_user_model().objects.all()
+            )
+        ],
+        required=True
+    )
+
+    class Meta:
+        model = get_user_model()
+        fields = (
+            'first_name', 'last_name', 'email'
+        )

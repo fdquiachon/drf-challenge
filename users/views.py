@@ -1,10 +1,35 @@
-from authemail.views import Signup, Login, UserMe
 from django.contrib.auth import get_user_model
+
+from authemail.views import Signup
 from oauth2_provider.views import TokenView
 from rest_framework import status
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.viewsets import ReadOnlyModelViewSet
 
-from users.serializers import CustomSignupSerializer
+from users.serializers import CustomUserSerializer, ReadOnlyUserSerializer
+
+
+class ListUserViewSet(ReadOnlyModelViewSet):
+    """
+    List all users
+    """
+
+    serializer_class = CustomUserSerializer
+    queryset = get_user_model().objects.all()
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+
+    def get_serializer_class(self):
+        """
+         Override serializer function to handle custom response
+         for anonymous API user.
+        """
+
+        serializer_class = super().get_serializer_class()
+        if not self.request.auth:
+            serializer_class = ReadOnlyUserSerializer
+        return serializer_class
 
 
 class LoginUserView(TokenView):
@@ -24,7 +49,6 @@ class RegisterUserView(Signup):
     """
 
     permission_classes = (AllowAny,)
-    serializer_class = CustomSignupSerializer
 
     def post(self, request, format=None):
         """
