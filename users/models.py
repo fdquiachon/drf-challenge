@@ -1,3 +1,10 @@
-from django.db import models
+from authemail.models import EmailAbstractUser
+from authemail.models import EmailUserManager
 
-# Create your models here.
+
+class MyCustomEmailUser(EmailAbstractUser):
+    """
+    Abastract Class for changing default user model.
+    """
+
+    objects = EmailUserManager()
