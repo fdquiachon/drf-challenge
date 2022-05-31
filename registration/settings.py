@@ -90,6 +90,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+LOGIN_URL = '/admin/login/'
 AUTH_USER_MODEL = 'users.MyCustomEmailUser'
 ROOT_URLCONF = 'registration.urls'
 

@@ -30,6 +30,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('authemail.urls')),
     path(
+        'o/',
+        include('oauth2_provider.urls', namespace='oauth2_provider')
+    ),
+    path(
         'api/users/',
         include((api_v1_urlpatterns, 'api_v1'), namespace='v1')
     ),
