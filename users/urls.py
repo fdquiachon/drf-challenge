@@ -19,6 +19,8 @@ from rest_framework import routers
 from users.views import ListUserViewSet
 from users.views import LoginUserView
 from users.views import RegisterUserView
+from users.views import UpdateUserView
+
 
 router = routers.SimpleRouter()
 
@@ -34,5 +36,10 @@ urlpatterns = [
         'login/',
         LoginUserView.as_view(),
         name='user-login'
+    ),
+    path(
+        'password/change',
+        UpdateUserView.as_view(),
+        name='user-password'
     )
 ] + router.urls
