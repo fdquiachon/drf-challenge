@@ -96,8 +96,8 @@ ROOT_URLCONF = 'registration.urls'
 
 # Disable to trigger custom email.
 # Email Config
-EMAIL_FROM = os.environ.get('EMAIL_HOST_USER')
-EMAIL_BCC = os.environ.get('DEV_SUPPORT')
+EMAIL_FROM = env('EMAIL_HOST_USER')
+EMAIL_BCC = env('DEV_SUPPORT')
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
