@@ -67,7 +67,7 @@ OAUTH2_PROVIDER = {
         # 'groups': 'Access to your groups'
     },
     # Token expiry set to 1 day
-    'ACCESS_TOKEN_EXPIRE_SECONDS': 86400,
+    'ACCESS_TOKEN_EXPIRE_SECONDS': 3600,
     'OAUTH2_BACKEND_CLASS': 'oauth2_provider.oauth2_backends.JSONOAuthLibCore',
 }
 
