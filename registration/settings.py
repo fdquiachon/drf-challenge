@@ -48,7 +48,10 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     'environ',
-    'rest_framework'
+    'rest_framework',
+    'rest_framework.authtoken',
+    'authemail',
+    'oauth2_provider',
 ]
 
 LOCAL_APPS = [
@@ -57,6 +60,25 @@ LOCAL_APPS = [
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
+OAUTH2_PROVIDER = {
+    'SCOPES': {
+        'read': 'Read scope',
+        'write': 'Write scope',
+        # 'groups': 'Access to your groups'
+    },
+    # Token expiry set to 1 day
+    'ACCESS_TOKEN_EXPIRE_SECONDS': 3600,
+    'OAUTH2_BACKEND_CLASS': 'oauth2_provider.oauth2_backends.JSONOAuthLibCore',
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+    )
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -68,7 +90,22 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+LOGIN_URL = '/admin/login/'
+AUTH_USER_MODEL = 'users.MyCustomEmailUser'
 ROOT_URLCONF = 'registration.urls'
+
+# Disable to trigger custom email.
+# Email Config
+EMAIL_FROM = env('EMAIL_HOST_USER')
+EMAIL_BCC = env('DEV_SUPPORT')
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_PORT = env('EMAIL_PORT')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+DEV_SUPPORT = env('DEV_SUPPORT')
 
 TEMPLATES = [
     {
